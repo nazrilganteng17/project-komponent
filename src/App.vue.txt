@@ -1,0 +1,159 @@
+<script setup>
+import { ref } from 'vue';
+
+let msg = "Hallo Duniaa";
+let headName = "<h1>Nama Saya Candra</h1>"
+let number = 1;
+let ok = "NO";
+let seen = true; // 1 atau 0
+
+let isButtonDisabled = true;
+
+// Split Reverse Message
+let message = ref("Hai Vue JS");
+function balikkanPesan() {
+  message.value = message.value.split('').reverse().join('');
+}
+
+// pengulangan
+let todos = [
+  { teks: 'Belajar JavaScript' },
+  { teks: 'Belajar Vue' },
+  { teks: 'Buat proyek keren' }
+]
+
+// Input
+let pesan = ref("Hai Vue");
+
+// contoh 
+let data = [
+  {
+    nama: 'Ujang',
+    kelas: 'RPL 1'
+  },
+
+  { nama: 'Deden', kelas: "RPL 2" },
+
+];
+</script>
+
+
+<template>
+  <div>
+    <span>{{ msg }}</span> <br>
+    <span style="color:red">Ini Warna Merah</span><br>
+    <span v-html="headName"></span>
+    <button v-bind:disabled="isButtonDisabled">Tombol</button> <br>
+    {{ number + 1 }} <br>
+    {{ ok ? 'YES' : 'NO' }} <br>
+    {{ msg.split('').reverse().join('i') }}
+    <!-- Direktif -->
+    <p v-if="seen">Sekarang Anda bisa melihatku</p>
+  </div>
+
+  <!-- Split Button -->
+  <p>{{ message }}</p>
+  <button v-on:click="balikkanPesan">Balikkan Pesan</button>
+
+  <!-- For -->
+  <br> Pengulangan
+  <ol>
+    <li v-for="siswa in data">
+      {{ siswa.nama }} {{ siswa.kelas }}
+    </li>
+  </ol>
+
+  <table border="1">
+    <tr>
+      <th>No</th>
+      <th>Nama</th>
+      <th>Kelas</th>
+    </tr>
+    <tr v-for="siswa in data">
+      <td>{{ number++ }}</td>
+      <td>{{ siswa.nama }}</td>
+      <td>{{ siswa.kelas }}</td>
+    </tr>
+  </table>
+
+  <!-- Input -->
+  <p>{{ pesan }}</p>
+  <input v-model="pesan">
+</template>
+
+
+<template>
+  <div>
+    <h2>Formulir</h2>
+    <form @submit.prevent="submitForm">
+      <label for="">Nama</label>
+      <input class="{'is-invalid':isInvalidName}" type="text" name="nama" v-model="kontak.nama">
+      <div v-if="isInvalidName" class="error-message">
+        Nama Harus Di Isi!
+      </div>
+      <br>
+      <label for="">Email</label>
+      <input class="{'is-invalid':isInvalidEmail}" type="email" name="email" v-model="kontak.email">
+      <div v-if="isInvalidEmail" class="error-message">
+        Email Harus Di Isi!
+      </div>
+      <br>
+      <button type="submit">Simpan</button>
+    </form>
+    <div v-if="showResult">
+      nama : {{ name }} <br>
+      email : {{ email }}
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+  data() {
+    return {
+      kontak: {
+        nama: '',
+        email: '',
+      },
+      showResult: ref(false),
+      name: ref(''),
+      email: ref(''),
+
+    };
+  },
+  computed: {
+    isInvalidName() {
+      return this.name.length <= 1;
+    },
+    isInvalidEmail() {
+      return this.email.length <= 1;
+    }
+  },
+  methods: {
+    submitForm() {
+      this.name = this.kontak.nama;
+      this.email = this.kontak.email;
+      this.showResult = true;
+      this.isInvalidEmail = false;
+      this.isInvalidName = false
+    },
+  },
+};
+</script>
+
+<style>
+h2 {
+  color: blue;
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+.is-invalid {
+  border-color: red;
+}
+</style>
